@@ -167,3 +167,17 @@ div.dataTables_info, div.dataTables_paginate  {
   max-width: 100%;
   height: 252px;
 }
+
+.bg-moto{
+  background-image: url(../images/login_bg.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important; 
+}
+
+.btn-yellow {
+  color: black !important;
+}
+
+.border-yellow {
+  border-color: rgb(251, 212, 36) !important;border-color: rgb(251, 212, 36) !important;
+}

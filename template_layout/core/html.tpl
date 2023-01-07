@@ -4,7 +4,7 @@
 	<meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title><?=$OMPage->getTitle("WLAP",$OMRoute->uri(),"")?></title>
+	<title><?=$OMPage->getTitle("Marshal Motosport",$OMRoute->uri(),"")?></title>
 	<base href="<?=WEB_META_BASE_URL?>" />
 	<link rel="shortcut icon" href="<?=WEB_META_BASE_URL?>images/favicon.png" />
 	<link rel="preconnect" href="https://fonts.gstatic.com">
@@ -42,7 +42,7 @@
 	<!-- SITE -->
 	<link rel="stylesheet" href="<?=WEB_META_BASE_URL?>css/site.css">
 </head>
-<body>
+<body class="antialiased theme-dark bg-moto">
 	<div id="toast-container"></div>
 	<?php include $theme_dir . "body.tpl"; 
 		$data_lang = array();
