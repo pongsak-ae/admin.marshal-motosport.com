@@ -192,25 +192,6 @@ function generateTransactionId() {
 //     }
 // }
 
-function generateEventKey() {
-	$DB = OMDb::singleton();
-
-	$check_status = false;
-	// while ($check_status == false) {
-	$event_key = base64_encode(randomChar(3) . rand(100000, 999999) . uniqid() . rand(100000, 999999) . randomChar(3));
-	$event_key = str_replace(array("=="), array(""), $event_key);
-	$sql = "select event_campaign_id from event_campaign_mapping where event_key = @event_key";
-	$sql_param = array();
-	$sql_param['event_key'] = $event_key;
-	$ds = null;
-	$res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
-	if ($res > 0) {
-		return false;
-	}
-	// }
-
-	return $event_key;
-}
 
 function randomChar($size) {
 	$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -685,16 +666,6 @@ function text_english($str){
 
 }
 
-function checkUsername($usename){
-	$DB = OMDb::singleton();
-	$sql = "SELECT username FROM users WHERE username = @usename LIMIT 1";
-    $sql_param	= array();
-    $sql_param['usename'] = $usename;
-    $ds = null;
-    $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
-
-    return $res;
-}
 
 function encrypt_params($plainText, $password, $iv){
 	$method = 'aes-256-cbc';

@@ -13,7 +13,7 @@ if(isset($_SESSION['loggedin'])){
 	if($_SESSION['loggedin'] == true ){
 		$checkname = 1;
 	}
-}
+};
 
 if (($checkname == 0) && ($OMRoute->path() != "login/index")) {
 	header("Location: ".WEB_META_BASE_URL."en/login/");

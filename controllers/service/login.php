@@ -20,24 +20,24 @@ if ($cmd != "") {
         $login_username = isset($_POST['login_username']) ? $_POST['login_username'] : "";
         $login_password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
 
-        $sql = "SELECT * FROM employee WHERE username = @username AND status = 'Y'";
+        $sql = "SELECT * FROM tb_employee WHERE EMPLOYEE_USERNAME = @username AND EMPLOYEE_STATUS = true";
         $sql_param = array();
         $sql_param['username'] = $login_username;
         $ds = null;
-        $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
+        $res = $DB->query($ds, $sql, $sql_param, 0, 1, "ASSOC");
+
         if ($res > 0) {  
             foreach ($ds as $obj) {
-                $accounts_id        = $obj['emp_id'];
-                $accounts_user      = $obj['username'];
-                $accounts_pwd       = $obj['password'];
-                $accounts_fullname  = $obj['full_name'];
-                $accounts_email     = $obj['email'];
-                $accounts_position  = $obj['position'];
-                $accounts_status    = $obj['status'];
-                $accounts_admin     = $obj['is_admin'];
+                $accounts_id        = $obj['EMPLOYEE_ID'];
+                $accounts_user      = $obj['EMPLOYEE_USERNAME'];
+                $accounts_pwd       = $obj['EMPLOYEE_PASSWD'];
+                $accounts_email     = $obj['EMPLOYEE_EMAIL'];
+                $accounts_group     = $obj['EMPLOYEE_SYS_GROUPNAME'];
+                $accounts_status    = $obj['EMPLOYEE_STATUS'];
+                $accounts_lang      = $obj['EMPLOYEE_LANGUAGEUSER'];
             }
 
-            if($accounts_status == "Y"){
+            if($accounts_status == true){
                  if(my_decrypt($accounts_pwd, WCMSetting::$ENCRYPT_LOGIN) == $login_password){
 
                     $_SESSION['loggedin']       = true;
@@ -45,10 +45,10 @@ if ($cmd != "") {
                     $_SESSION['user_id']        = safeEncrypt($accounts_id, WCMSetting::$ENCRYPT_EMPLOYEE);
                     $_SESSION['last_activity']  = time();
                     $_SESSION['expire_time']    = 86400 * 30;
-                    $_SESSION['status']         = "Y";
+                    $_SESSION['status']         = true;
                     $_SESSION['user_name']      = $accounts_user;
-                    $_SESSION['isAdmin']        = $accounts_admin;
-
+                    $_SESSION['isAdmin']        = ($accounts_group == 1) ? true : false;
+                    $_SESSION['email']          = $accounts_email;
                     $response['status'] = true;
                     $response['msg'] = 'Login successfully';
 
@@ -75,6 +75,7 @@ if ($cmd != "") {
         unset($_SESSION['status']);
         unset($_SESSION['user_name']);
         unset($_SESSION['is_admin']);
+        unset($_SESSION['email']);
         session_commit();
 
         $response['status'] = true;

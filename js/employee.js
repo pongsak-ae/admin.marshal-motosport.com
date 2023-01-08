@@ -2,6 +2,7 @@ $(function(){
     var dt_employee = $('#datatable_employee').DataTable({
         responsive: true,
         pageLength: 10,
+        ordering: false,
         ajax: {
             "url" : BASE_LANG + "service/employee.php",
             "type": "POST",
@@ -11,68 +12,38 @@ $(function(){
         },
         type: "JSON",
         columns: [
-            { data: "username"},
-            { data: "full_name"},
-            { data: "telephone"},
-            { data: "email"},
-            { data: "position"},
-            //{ data: "is_admin", render: employee_is_admin},
-            { data: "emp_id", render: employee_tools}
+            { data: "EMPLOYEE_STATUS",  render: status},
+            { data: "EMPLOYEE_USERNAME"},
+            { data: "EMPLOYEE_EMAIL"},
+            { data: "EMPLOYEE_LANGUAGEUSER", render: lang},
+            { data: "EMPLOYEE_SYS_GROUPNAME", render: group},
+            { data: "EMPLOYEE_ID", render: employee_tools}
         ],
         columnDefs: [
             { targets: "_all", defaultContent: "-"},
-            { targets: 5, className: "text-center", width: "10%"}
+            { targets: [0,5,3,4], className: "text-center", width: "10%"}
         ]
     });
     
     $('#datatable_employee').on('click', '[name="edit_employee"]', function(e){
         var data = $(e.currentTarget).data();
-        console.log(data);
         $('#edit_e_username').val(data.username);
         $('#edit_e_name').val(data.fullName);
-        $('#edit_e_phone').val(data.telephone);
+        $('input[name=edit_e_language]').attr("checked", false);
+        $('input[name=edit_e_language][value=' + data.lang + ']').attr("checked", true);
         $('#edit_e_email').val(data.email);
-        $('#edit_e_pos').val(data.position);
-        $("#edit_e_admin option").each(function () {
-            if($(this).val() == data.edit_e_admin){
+
+        $("#edit_e_group option").each(function () {
+            if($(this).val() == data.group){
                 $(this).attr("selected","selected");
             } else {
                 $(this).removeAttr("selected");
             }
         });
+
         $('#edit_e_id').val(data.empId);
         $('#modal_edit').modal('show');
     });
-
-    // $('#datatable_employee').on('click', '[name="upd_active"]', function(e){
-    //     e.preventDefault();
-    //     var data = $(e.currentTarget).data();
-    //     $('.btn-confirm-upd').data('empId', data.empId);
-    //     $('.btn-confirm-upd').data('active', data.active);
-    //     $('#modal_active').modal('show');
-    // });
-
-    // $('#modal_active').on('click', '.btn-confirm-upd', function(){
-    //     $.ajax({
-    //         type: "post",
-    //         url: BASE_LANG + "service/employee.php",
-    //         data: {
-    //             "cmd": "update_status",
-    //             "emp_id": $(this).data('empId'),
-    //             "emp_active": $(this).data('active')
-    //         },
-    //         dataType: "json",
-    //         success: function (res) {
-    //             var msg = res['msg'];
-    //             if (res['status']) {
-    //                 alert_center('Update employee status', msg, "success")
-    //                 dt_employee.ajax.reload();
-    //             }else{
-    //                 alert_center('Update employee status', msg, "error")
-    //             }
-    //         }
-    //     });
-    // });
 
     $('#modal_remove').on('click', '.btn-confirm-del', function(){
         $.ajax({
@@ -115,13 +86,16 @@ $(function(){
 
     $('#frm_add_employee').validate({
         rules: {
-            add_e_username: {
+            add_emp_username: {
                 required: true
             },
-            add_e_password: {
+            add_emp_username: {
                 required: true
             },
-            add_e_name: {
+            add_emp_email: {
+                required: true
+            },
+            add_emp_group: {
                 required: true
             }
         },
@@ -164,12 +138,18 @@ $(function(){
         }
     });
 
-    $('#frm_edit_speaker').validate({
+    $('#frm_edit_employee').validate({
         rules: {
-            add_e_username: {
+            edit_e_username: {
                 required: true
             },
-            add_e_name: {
+            edit_e_username: {
+                required: true
+            },
+            edit_e_email: {
+                required: true
+            },
+            edit_e_group: {
                 required: true
             }
         },
@@ -212,29 +192,32 @@ $(function(){
         }
     });
 
-    // function employee_is_admin(data, type, row) {
-    //     if (data == 'Y')
-    //         return '<label class="form-switch"> \
-    //                     <input class="form-check-input" name="upd_active" type="checkbox" data-active="' + data + '" data-emp-id="' + row['emp_id'] +'" checked> \
-    //                 </label>';
-    //     else
-    //         return '<label class="form-switch"> \
-    //                     <input class="form-check-input" name="upd_active" type="checkbox" data-active="' + data + '" data-emp-id="' + row['emp_id'] +'"> \
-    //                 </label>';
-    // }
-
-    function employee_tools(data, type, row) {
-        var tools = '<button ';
-            tools += ' data-emp-id = "' + data + '"';
-            tools += ' data-username = "' + row['username'] + '"';
-            tools += ' data-full-name = "'  + row['full_name'] + '"';
-            tools += ' data-telephone = "' + row['telephone'] + '"';
-            tools += ' data-email = "' + row['email'] + '"';
-            tools += ' data-position = "' + row['position'] + '"';
-            tools += ' name="edit_employee" class="btn btn-outline-warning mx-1"><i class="fas fa-edit"></i></button>';
-            tools += '<button name="remove_employee" data-user-name = "' + row['username'];
-            tools += '" data-emp-id="' + data + '" class="btn btn-outline-danger mx-1" data-bs-toggle="modal" data-bs-target="#modal_remove">'
-            tools += '<i class="far fa-trash-alt"></i></button>';
-        return tools
-    }
 })
+
+function status(data, type, row) {
+    console.log(data)
+    var status = (data == 'true') ? 'success' : 'danger';
+    return '<div class="badge bg-' + status + '"></div>';
+}
+
+function lang(data, type, row) {
+    return '<span class="flag flag-country-' + data + '"></span> ';
+}
+
+function group(data, type, row) {
+    return '<span class="badge bg-yellow-lt">' + row['GROUP_NAME'] + '</span>';
+}
+
+function employee_tools(data, type, row) {
+    var tools = '<button ';
+        tools += ' data-emp-id = "' + data + '"';
+        tools += ' data-username = "' + row['EMPLOYEE_USERNAME'] + '"';
+        tools += ' data-email = "' + row['EMPLOYEE_EMAIL'] + '"';
+        tools += ' data-lang = "'  + row['EMPLOYEE_LANGUAGEUSER'] + '"';
+        tools += ' data-group = "' + row['EMPLOYEE_SYS_GROUPNAME'] + '"';
+        tools += ' name="edit_employee" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
+        tools += '<button name="remove_employee" data-user-name = "' + row['EMPLOYEE_USERNAME'];
+        tools += '" data-emp-id="' + data + '" class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#modal_remove">'
+        tools += '<i class="far fa-trash-alt"></i></button>';
+    return tools
+}
