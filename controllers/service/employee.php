@@ -73,6 +73,7 @@ if ($cmd != "") {
                 $ds_check = null;
                 $res_check = $DB->query($ds_check, $sql_check, $sql_check_param, 0, 1, "ASSOC");
                 if ($res_check == 0) {
+                    $edit_e_status = isset($_POST['edit_e_status']) ? $_POST['edit_e_status'] : "";
                     $sql_param = array();
                     $sql_param['EMPLOYEE_ID'] = $_POST['edit_e_id'];
                     $sql_param['EMPLOYEE_USERNAME'] = addslashes($_POST['edit_e_username']);
@@ -82,6 +83,7 @@ if ($cmd != "") {
                     if (!empty($_POST['edit_e_language'])) $sql_param['EMPLOYEE_LANGUAGEUSER'] = $_POST['edit_e_language'];
                     if (!empty($_POST['edit_e_email'])) $sql_param['EMPLOYEE_EMAIL'] = $_POST['edit_e_email'];
                     $sql_param['EMPLOYEE_SYS_GROUPNAME'] = $_POST['edit_e_group'];
+                    $sql_param['EMPLOYEE_STATUS'] = (isset($_POST['edit_e_status']) == 'on') ? 'true' : 'false';
                     $res = $DB->executeUpdate('tb_employee', 1, $sql_param); 
                     if ($res > 0) {
                         $response['status'] = true;
@@ -102,35 +104,12 @@ if ($cmd != "") {
             $response['status'] = false;
             $response['msg'] = 'You are not authorized to edit employee.';
         }
-    } else if ($cmd == "update_status") {
-        if ($_SESSION['isAdmin'] == true) {
-            if (!empty($_POST['emp_id']) && !empty($_POST['emp_active'])) {
-                $sql_param = array();
-                $sql_param['emp_id'] = $_POST['emp_id'];
-                $sql_param['is_admin'] = $_POST['emp_active'];
-                $sql_param['update_by'] = getSESSION();
-                $res = $DB->executeUpdate('employee', 1, $sql_param);
-                if ($res > 0) {
-                    $response['status'] = true;
-                    $response['msg'] = 'successfully';
-                }else{
-                    $response['status'] = false;
-                    $response['msg'] = 'failed';
-                }
-            } else {
-                $response['status'] = false;
-                $response['msg'] = 'invalid data';
-            }
-        } else {
-            $response['status'] = false;
-            $response['msg'] = 'You are not authorized to update status employee.';
-        }
     } else if ($cmd == "remove_employee") {
         if ($_SESSION['isAdmin'] == "Y") {
             if (isset($_POST['emp_id'])) {
                 $sql_param = array();
                 $sql_param['EMPLOYEE_ID'] = $_POST['emp_id'];
-                $sql_param['EMPLOYEE_STATUS'] = false;
+                $sql_param['EMPLOYEE_STATUS'] = "false";
                 $res = $DB->executeUpdate('tb_employee', 1, $sql_param);
                 if ($res > 0) {
                     $response['status'] = true;

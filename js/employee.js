@@ -41,6 +41,32 @@ $(function(){
             }
         });
 
+        /* STATUS */
+        var statusHTML_enable = '';
+        statusHTML_enable += '<span class="avatar me-3 badge bg-success"></span>';
+        statusHTML_enable += '<div><div class="font-weight-medium">Enable</div></div>';
+
+        var statusHTML_disable = '';
+        statusHTML_disable += '<span class="avatar me-3 badge bg-danger"></span>';
+        statusHTML_disable += '<div><div class="font-weight-medium">Disable</div></div>';
+
+        if(data.status == true){
+            $('input[name=edit_e_status]').attr("checked", true);
+            $('#edit_text_status').html(statusHTML_enable);
+        }else{
+            $('input[name=edit_e_status]').attr("checked", false);
+            $('#edit_text_status').html(statusHTML_disable);
+        }
+
+        $('input[name=edit_e_status]').on('change', function() {
+            if(this.checked) {
+                $('#edit_text_status').html(statusHTML_enable);
+            }else{
+                $('#edit_text_status').html(statusHTML_disable);
+            }
+        });
+        /* STATUS */
+
         $('#edit_e_id').val(data.empId);
         $('#modal_edit').modal('show');
     });
@@ -195,7 +221,6 @@ $(function(){
 })
 
 function status(data, type, row) {
-    console.log(data)
     var status = (data == 'true') ? 'success' : 'danger';
     return '<div class="badge bg-' + status + '"></div>';
 }
@@ -205,7 +230,7 @@ function lang(data, type, row) {
 }
 
 function group(data, type, row) {
-    return '<span class="badge bg-yellow-lt">' + row['GROUP_NAME'] + '</span>';
+    return '<span class="badge bg-yellow-lt w-100">' + row['GROUP_NAME'] + '</span>';
 }
 
 function employee_tools(data, type, row) {
@@ -215,6 +240,7 @@ function employee_tools(data, type, row) {
         tools += ' data-email = "' + row['EMPLOYEE_EMAIL'] + '"';
         tools += ' data-lang = "'  + row['EMPLOYEE_LANGUAGEUSER'] + '"';
         tools += ' data-group = "' + row['EMPLOYEE_SYS_GROUPNAME'] + '"';
+        tools += ' data-status = "' + row['EMPLOYEE_STATUS'] + '"';
         tools += ' name="edit_employee" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
         tools += '<button name="remove_employee" data-user-name = "' + row['EMPLOYEE_USERNAME'];
         tools += '" data-emp-id="' + data + '" class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#modal_remove">'

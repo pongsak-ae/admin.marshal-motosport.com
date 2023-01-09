@@ -2,7 +2,7 @@
 
 $PAGE_VAR["js"][] = "member";
 
-if($_SESSION['status'] != true){
+if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true){
  header("Location: ".WEB_META_BASE_LANG."login/");
 }
 

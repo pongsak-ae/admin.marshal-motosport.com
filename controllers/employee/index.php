@@ -213,6 +213,23 @@ if ($_SESSION['status'] != true && $_SESSION['isAdmin'] != true) {
                         <label for="edit_e_group">GROUP</label>
                     </div>
 
+                    <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                        <label class="form-selectgroup-item flex-fill">
+                        <input type="checkbox" name="edit_e_status" class="form-selectgroup-input">
+                        <div class="form-selectgroup-label d-flex align-items-center p-3">
+                            <div class="me-3">
+                                <span class="form-selectgroup-check"></span>
+                            </div>
+                            <div id="edit_text_status" class="form-selectgroup-label-content d-flex align-items-center">
+                                <span class="avatar me-3 badge bg-success"></span>
+                                <div>
+                                    <div class="font-weight-medium">Enable</div>
+                                </div>
+                            </div>
+                        </div>
+                        </label>
+                    </div>
+
                     <input id="edit_e_id" name="edit_e_id" type="hidden">
                 </div>
                 <div class="modal-footer">
