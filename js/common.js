@@ -468,7 +468,7 @@ $('body').on('click','.close',function(){
 function modal_remove(btn_remove_id, modalID, text, divID){
     var modal_removeHTML = '';
     modal_removeHTML += '<div class="modal modal-blur fade" id="' + modalID + '">';
-    modal_removeHTML += '<div class="modal-dialog modal-sm" role="document">';
+    modal_removeHTML += '<div class="modal-dialog modal-sm modal-dialog-centered" role="document">';
     modal_removeHTML += '<div class="modal-content">';
     modal_removeHTML += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
     modal_removeHTML += '<div class="modal-status bg-danger"></div>';

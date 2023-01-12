@@ -88,7 +88,7 @@
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/template/js/tabler.min.js"></script>
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/sweetalert1/sweetalert.min.js"></script>
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/wysiwyg/quill-snow/quill.js"></script>
-
+	
 	<!-- <script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/sweetalert2/sweetalert2.min.js"></script> -->
 	<!-- template:js -->
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/comp.js<?=$OMPage->merge_media('js')?>"></script>

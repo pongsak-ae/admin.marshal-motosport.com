@@ -8,19 +8,37 @@
 		    <div class="navbar navbar-light">
 		      <div class="container-xl">
 		        <ul class="navbar-nav col-md-10 col-sm-12">
-		        	<li class="nav-item">
-		        		<a class="nav-link" href="<?=WEB_META_BASE_LANG ; ?>" >
-		        			<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-chalkboard-teacher" style="margin: 1px 5px 0px 0px;"></i>
-		        			<span class="nav-link-title">Member Registered</span>
-		        		</a>
-		        	</li>
-					<li class="nav-item">
-		        		<a class="nav-link" href="<?=WEB_META_BASE_LANG?>about">
-		        			<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-id-card-alt" style="margin: 1px 5px 0px 0px;"></i>
-		        			<span class="nav-link-title">About</span>
-		        		</a>
-		        	</li>
 					<?php if ($_SESSION['isAdmin'] == true) { ?>
+						<li class="nav-item">
+							<a class="nav-link" href="<?=WEB_META_BASE_LANG ; ?>news" >
+								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-newspaper" style="margin: 1px 5px 0px 0px;"></i>
+								<span class="nav-link-title">News</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?=WEB_META_BASE_LANG ; ?>member" >
+								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-chalkboard-teacher" style="margin: 1px 5px 0px 0px;"></i>
+								<span class="nav-link-title">Member Registered</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?=WEB_META_BASE_LANG?>gallery">
+								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-images" style="margin: 1px 5px 0px 0px;"></i>
+								<span class="nav-link-title">Services</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?=WEB_META_BASE_LANG?>about">
+								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-id-card-alt" style="margin: 1px 5px 0px 0px;"></i>
+								<span class="nav-link-title">About</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?=WEB_META_BASE_LANG ; ?>banner" >
+								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-th-large" style="margin: 1px 5px 0px 0px;"></i>
+								<span class="nav-link-title">Banner</span>
+							</a>
+						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<?=WEB_META_BASE_LANG?>employee">
 								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-users-cog" style="margin: 1px 5px 0px 0px;"></i>

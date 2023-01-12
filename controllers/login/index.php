@@ -1,12 +1,7 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');
-$theme = "login";
-$PAGE_VAR["js"][] = "authentication/login";
-
-if(isset($_SESSION['status'])){
-  header("Location: ".WEB_META_BASE_LANG);
-} 
-
+  header('Content-Type: text/html; charset=utf-8');
+  $theme = "login";
+  $PAGE_VAR["js"][] = "authentication/login";
 ?>
 
 <form id="login" class="card card-md">
