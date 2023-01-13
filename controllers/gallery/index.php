@@ -103,7 +103,7 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true){
     </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal_edit" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal_edit" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-status bg-yellow"></div>
@@ -151,7 +151,7 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true){
                             <line x1="12" y1="5" x2="12" y2="19" />
                             <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
-                        Create new gallery
+                        Update gallery
                     </button>
                 </div>
             </form>

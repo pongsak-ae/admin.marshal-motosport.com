@@ -2,7 +2,7 @@
 
 $PAGE_VAR["js"][] = "news";
 
-if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true){
+if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['group'] != 2){
   header("Location: ".WEB_META_BASE_LANG."login/");
 }
 
@@ -159,7 +159,7 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true){
     </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal_edit" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal_edit" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-status bg-yellow"></div>

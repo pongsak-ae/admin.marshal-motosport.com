@@ -10,6 +10,12 @@
 		        <ul class="navbar-nav col-md-10 col-sm-12">
 					<?php if ($_SESSION['isAdmin'] == true) { ?>
 						<li class="nav-item">
+							<a class="nav-link" href="<?=WEB_META_BASE_LANG ; ?>delivery">
+								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-shipping-fast" style="margin: 1px 5px 0px 0px;"></i>
+								<span class="nav-link-title">Delivery</span>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a class="nav-link" href="<?=WEB_META_BASE_LANG ; ?>news" >
 								<i class="nav-link-icon d-md-none d-lg-inline-block fas fa-newspaper" style="margin: 1px 5px 0px 0px;"></i>
 								<span class="nav-link-title">News</span>

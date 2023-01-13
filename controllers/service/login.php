@@ -48,6 +48,7 @@ if ($cmd != "") {
                     $_SESSION['status']         = true;
                     $_SESSION['user_name']      = $accounts_user;
                     $_SESSION['isAdmin']        = ($accounts_group == 1) ? true : false;
+                    $_SESSION['group']          = $accounts_group;
                     $_SESSION['email']          = $accounts_email;
                     $response['status'] = true;
                     $response['msg'] = 'Login successfully';
@@ -76,6 +77,7 @@ if ($cmd != "") {
         unset($_SESSION['user_name']);
         unset($_SESSION['is_admin']);
         unset($_SESSION['email']);
+        unset($_SESSION['group']);
         session_commit();
 
         $response['status'] = true;

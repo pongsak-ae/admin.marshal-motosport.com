@@ -690,9 +690,9 @@ function array_has_dupes($array) {
    return count($array) !== count(array_unique($array));
 }
 
-function course(){
+function delivery_type(){
 	$DB = OMDb::singleton();
-    $sql = "SELECT * FROM course";
+    $sql = "SELECT * FROM tb_delivery_type WHERE DELIVERY_TYPE_STATUS = 'on'";
 
     $sql_param = array();
     $ds = null;
@@ -701,26 +701,11 @@ function course(){
     return $ds;
 }
 
-function employee(){
-	$DB = OMDb::singleton();
-    $sql = "SELECT * FROM employee";
-
-    $sql_param = array();
-    $ds = null;
-    $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
-
-    return $ds;
-}
-
-function contact(){
-	$DB = OMDb::singleton();
-    $sql = "SELECT * FROM contact WHERE contact_id = 1 LIMIT 1";
-
-    $sql_param = array();
-    $ds = null;
-    $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
-
-    return $ds[0];
+function get_lastPath($last_path) {
+	$last_path = str_replace('/?', '?', $last_path);
+	$last_path = rtrim($last_path, '/');
+	$PARTS = explode('/', $last_path);
+    return strtolower(explode('?', end($PARTS), 2)[0]);
 }
 
 ?>

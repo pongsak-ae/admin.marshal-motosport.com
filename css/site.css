@@ -181,3 +181,9 @@ div.dataTables_info, div.dataTables_paginate  {
 .border-yellow {
   border-color: rgb(251, 212, 36) !important;border-color: rgb(251, 212, 36) !important;
 }
+
+.navbar-expand-md .navbar-light .nav-item.active::after, .navbar-expand-md.navbar-light .nav-item.active::after {
+    border: 0 solid #f4cc1c !important;
+    border-bottom-width: 0px;
+    border-bottom-width: 2px !important;
+}

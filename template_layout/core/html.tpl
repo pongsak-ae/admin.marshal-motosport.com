@@ -52,6 +52,8 @@
 				$data_lang[$key] = $value;
 			}
 		}
+
+		$PAGE =  get_lastPath($OMRoute->uri());
 	?>
 	<script type="text/javascript">
 		var LANG = '<?=LANG?>';
@@ -59,6 +61,7 @@
 		var BASE_URL_API = '<?=WEB_META_BASE_API?>';
 		var BASE_LANG = '<?=WEB_META_BASE_LANG?>';
 		var sData_lang = '<?=json_encode($data_lang)?>';
+		var PAGE = '<?=$PAGE?>';
 	</script>
 
 	<!-- BOOTSTRAP 5 -->

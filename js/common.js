@@ -11,6 +11,10 @@ $(this).on('show.bs.modal load', function() {
 
 $(document).ready(function(){
 
+    // ADD CLASS ACTIVE MENU
+    $('.nav-item').removeClass('active');
+    $('.nav-link[href="' + BASE_LANG + PAGE + '"]').parent().addClass('active');
+
     $('#sign_out').on("click", function() {
         $.ajax({
             type: "post",
@@ -42,7 +46,7 @@ $(document).ready(function(){
 });
 
 $.validator.addMethod("numberOnly", function(value, element, param) {
-  return this.optional(element) || /^[0-9]+$/i.test(value);
+  return this.optional(element) || /^[0-9].+$/i.test(value);
 }, "Please enter only number !");
 
 $.validator.addMethod("is_english", function(value, element, param) {
