@@ -88,33 +88,173 @@ $(function() {
     });
 
     $('#dtb_order tbody').on( 'click', '[name="order_status"]', function (e) {
-        var row = $(this).closest("tr"); 
-        var image_url = row.find('[name="img"]').attr('data-img');
-        
+        var data = $(e.currentTarget).data();
+
         var modal_statusHTML = '';
         modal_statusHTML += '<div class="modal modal-blur fade" id="modal_imageGEN" data-bs-backdrop="static">';
-        modal_statusHTML += '<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">';
+        modal_statusHTML += '<div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">';
         modal_statusHTML += '<div class="modal-content">';
         modal_statusHTML += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
-        modal_statusHTML += '<div class="modal-status bg-yellow">Update order</div>';
+        modal_statusHTML += '<div class="modal-status bg-yellow"></div>';
         modal_statusHTML += '<div class="modal-header">';
+        modal_statusHTML += '<h5 class="modal-title text-yellow">Update order</h5>';
         modal_statusHTML += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
         modal_statusHTML += '</div>';
         modal_statusHTML += '<div class="modal-body text-center py-4">';
-        modal_statusHTML += '';
+
+        modal_statusHTML += '<div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">';
+        modal_statusHTML += '<label class="form-selectgroup-item flex-fill">';
+        modal_statusHTML += '<input type="radio" name="edit_order_status" value="Pending" class="form-selectgroup-input">';
+        modal_statusHTML += '<div class="form-selectgroup-label d-flex align-items-center p-3">';
+        modal_statusHTML += '<div class="me-3">';
+        modal_statusHTML += '<span class="form-selectgroup-check"></span>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '<div>';
+        modal_statusHTML += '<strong>Pending</strong>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</label>';
+        modal_statusHTML += '<label class="form-selectgroup-item flex-fill">';
+        modal_statusHTML += '<input type="radio" name="edit_order_status" value="Paid" class="form-selectgroup-input">';
+        modal_statusHTML += '<div class="form-selectgroup-label d-flex align-items-center p-3">';
+        modal_statusHTML += '<div class="me-3">';
+        modal_statusHTML += '<span class="form-selectgroup-check"></span>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '<div>';
+        modal_statusHTML += '<strong>Paid</strong>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</label>';
+        modal_statusHTML += '<label class="form-selectgroup-item flex-fill">';
+        modal_statusHTML += '<input type="radio" name="edit_order_status" value="Delivery" class="form-selectgroup-input">';
+        modal_statusHTML += '<div class="form-selectgroup-label d-flex align-items-center p-3">';
+        modal_statusHTML += '<div class="me-3">';
+        modal_statusHTML += '<span class="form-selectgroup-check"></span>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '<div>';
+        modal_statusHTML += '<strong>Delivery</strong>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</label>';
+        modal_statusHTML += '<label class="form-selectgroup-item flex-fill">';
+        modal_statusHTML += '<input type="radio" name="edit_order_status" value="Refund" class="form-selectgroup-input">';
+        modal_statusHTML += '<div class="form-selectgroup-label d-flex align-items-center p-3">';
+        modal_statusHTML += '<div class="me-3">';
+        modal_statusHTML += '<span class="form-selectgroup-check"></span>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '<div>';
+        modal_statusHTML += '<strong>Refund</strong>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</label>';
+        modal_statusHTML += '<label class="form-selectgroup-item flex-fill">';
+        modal_statusHTML += '<input type="radio" name="edit_order_status" value="Voided" class="form-selectgroup-input">';
+        modal_statusHTML += '<div class="form-selectgroup-label d-flex align-items-center p-3">';
+        modal_statusHTML += '<div class="me-3">';
+        modal_statusHTML += '<span class="form-selectgroup-check"></span>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '<div>';
+        modal_statusHTML += '<strong>Voided</strong>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</div>';
+        modal_statusHTML += '</label>';
+        modal_statusHTML += '</div>';
+
         modal_statusHTML += '</div>';
         modal_statusHTML += '<div class="modal-footer">';
         modal_statusHTML += '<button class="btn btn btn-white" data-bs-dismiss="modal">Cancel</button>';
+        modal_statusHTML += '<button id="submitStatus" type="submit" class="btn btn-yellow ms-auto"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>Update status</button>';
         modal_statusHTML += '</div>';
         modal_statusHTML += '</div>';
         modal_statusHTML += '</div>';
         modal_statusHTML += '</div>';
         $('#modal_image').html(modal_statusHTML);
         $('#modal_imageGEN').modal('show');
+        $( "input[name=edit_order_status][value=" + data.status + "]").attr("checked", "checked");
+
+        $('#submitStatus').on('click', function(){
+            $.ajax({
+                type: "post",
+                url: BASE_LANG + "service/order.php",
+                data: {
+                    cmd: "update_status",
+                    id : data.id,
+                    status: $('input[name=edit_order_status]:checked').val()
+                },
+                dataType: "json",
+                beforeSend: function(){
+                    $(':button[type="submit"]').prop('disabled', true);
+                },
+                complete: function(){
+                    $(':button[type="submit"]').prop('disabled', false);
+                },
+                success: function(res) {
+                    var status = res['status'];
+                    var msg = res['msg'];
+                    if (status == true) {
+                        dtb_order.ajax.reload(null, false);
+                        alert_center('Process status', msg, "success")
+                        $('#modal_imageGEN').modal('hide');
+                    }else{
+                        alert_center('Process status', msg, "error")
+                    }
+                }
+            });
+        });
+    });
+
+    $('#dtb_order tbody').on( 'click', '[name="product_list"]', function (e) {
+        $.LoadingOverlay("show");
+        var data = $(e.currentTarget).data();
+        $('#modal_product_list').modal('show');
+        $('#text_order').html('<storng class="text-white">[ ' + data.status + ' ]</storng> &nbsp&nbsp' + data.name);
+        $('#order_product_id').val(data.id);
+
+        if ( $.fn.DataTable.isDataTable('#dtb_product_list') ) {
+            $('#dtb_product_list').DataTable().destroy();
+        }
+
+        dtb_product_list = $("#dtb_product_list").DataTable({
+            responsive: true,
+            pageLength: 10,
+            ordering: false,
+            ajax: {
+                "url" : BASE_LANG + "service/order.php",
+                "type": "POST",
+                "data": function( d ){ 
+                    d.cmd = "product_list";
+                    d.id = data.id;
+                }
+            },
+            type: "JSON",
+            columns: [
+                { "data": "PRODUCT_IMG", render: product_image},
+                { "data": "PRODUCT_NAME"},
+                { "data": "PRODUCT_TYPE_NAME_TH"},
+                { "data": "PRODUCT_PRICE" },
+                { "data": "ORDER_QTY"}
+            ],
+            columnDefs: [
+                { targets: [0], className: "text-center", width: "7%" },
+                { targets: [1, 2], className: "truncate-200", width: "30%" },
+                { targets: [3,4], className: "text-center", width: "10%" },
+            ]
+        });
+
 
     });
 
+    $('#modal_product_list').on('shown.bs.modal', function () {
+        dtb_product_list.columns.adjust();
+        setTimeout(function(){
+            $.LoadingOverlay("hide");
+        }, 1000);
+        
+    });
+
 });
+
+
 
 function datetime(data, type, row, meta){
     return moment(data).format('YYYY-MM-DD HH:mm:ss');
@@ -133,7 +273,7 @@ function order_status(data, type, row, meta){
         orderBTN = 'primary';
     }
     
-    return '<button name="order_status" class="btn btn-' + orderBTN + ' btn-square w-100">' + data + '</button>';
+    return '<button data-id="' + row['ORDER_ID'] + '" data-status="' + data + '" name="order_status" class="btn btn-' + orderBTN + ' btn-square w-100">' + data + '</button>';
 }
 
 function member(data, type, row, meta){
@@ -159,8 +299,13 @@ function image(data, type, row, meta){
 function product(data, type, row, meta){
     var tools = '<button ';
         tools += ' data-id = "'       + data + '"';
-        tools += ' data-name-th = "'  + row['PRODUCT_NAME_TH'] + '"';
-        tools += ' data-tag = "'      + row['PRODUCT_TAG'] + '"';
-        tools += ' name="update" class="btn"><i class="fas fa-cart-arrow-down"></i>&nbsp&nbsp Product</button>';
+        tools += ' data-name = "'  + row['MEMBER_NAME'] + '"';
+        tools += ' data-status = "'  + row['ORDER_STATUS'] + '"';
+        tools += ' name="product_list" class="btn"><i class="fas fa-cart-arrow-down"></i>&nbsp&nbsp Product</button>';
     return tools;
+}
+
+function product_image(data, type, row, meta){
+    var imagesUrl = BASE_URL + 'images/product/' + JSON.parse(data)[0]['file_name'];
+    return '<img src="' + imagesUrl + '" class="rounded w-100" >';
 }

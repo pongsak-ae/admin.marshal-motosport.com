@@ -94,6 +94,7 @@
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/wysiwyg/quill-snow/quill.js"></script>
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/datepicker/daterangepicker.min.js"></script>
 	<!-- <script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/sweetalert2/sweetalert2.min.js"></script> -->
+	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/jquery-loading-overlay-2.1.7/loadingoverlay.min.js"></script>
 	<!-- template:js -->
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/comp.js<?=$OMPage->merge_media('js')?>"></script>
 </body>
