@@ -38,6 +38,7 @@
 	<link rel="stylesheet" href="<?=WEB_META_BASE_URL?>fontawesome-free/css/all.min.css">
 	<!-- Jquery -->
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/core/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet" href="<?=WEB_META_BASE_URL?>css/extensions/datepicker/daterangepicker.css">
 
 	<!-- SITE -->
 	<link rel="stylesheet" href="<?=WEB_META_BASE_URL?>css/site.css">
@@ -91,7 +92,7 @@
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/template/js/tabler.min.js"></script>
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/sweetalert1/sweetalert.min.js"></script>
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/wysiwyg/quill-snow/quill.js"></script>
-	
+	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/datepicker/daterangepicker.min.js"></script>
 	<!-- <script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/extensions/sweetalert2/sweetalert2.min.js"></script> -->
 	<!-- template:js -->
 	<script type="text/javascript" src="<?=WEB_META_BASE_URL?>js/comp.js<?=$OMPage->merge_media('js')?>"></script>

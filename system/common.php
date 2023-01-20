@@ -708,4 +708,15 @@ function get_lastPath($last_path) {
     return strtolower(explode('?', end($PARTS), 2)[0]);
 }
 
+function product_type(){
+	$DB = OMDb::singleton();
+    $sql = "SELECT * FROM tb_product_type WHERE PRODUCT_STATUS = 'on'";
+
+    $sql_param = array();
+    $ds = null;
+    $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
+
+    return $ds;
+}
+
 ?>

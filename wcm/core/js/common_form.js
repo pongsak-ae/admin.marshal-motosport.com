@@ -20,7 +20,7 @@ _form.child.command = "";
 _form.child.item_id = 0;
 _form.child.step = 0;
 
-$(document).ready(function(){
+$(function() {
   if (getParameterByName("recovery") != "") {
     showNotificationPreview("alert","Warning: ","Current data preview revision " + getParameterByName("recovery"));
   }

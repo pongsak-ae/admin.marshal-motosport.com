@@ -39,7 +39,7 @@ class OMTemplateWCM
 			$ret .= "	$(obj).datepicker({dateFormat: \"dd/mm/yy\", changeMonth: true, changeYear: true, showOtherMonths: true, selectOtherMonths: true, showAnim: \"fadeIn\" " . $datepicker_option_addon . "});" . "\r\n";
 			$ret .= "	return true;" . "\r\n";
 			$ret .= "}" . "\r\n";
-			$ret .= "$(document).ready(function(){" . "\r\n";
+			$ret .= "$(function() {" . "\r\n";
 			$ret .= "	$('#leftMenu').initLeftMenu({width: 169,height: 350,content: '.pageContent',title: '.header_section .title',rootText: 'Modules'});" . "\r\n";
 			$ret .= "	$('a.button').mousedown(function() { $(this).addClass(\"clicked\"); }).mouseout(function() { $(this).removeClass(\"clicked\"); }).mouseup(function() { $(this).removeClass(\"clicked\"); }); " . "\r\r";
 			$ret .= "	bindDatePicker();";

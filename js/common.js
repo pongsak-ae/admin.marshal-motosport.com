@@ -9,8 +9,7 @@ $(this).on('show.bs.modal load', function() {
     });
 })
 
-$(document).ready(function(){
-
+$(function() {
     // ADD CLASS ACTIVE MENU
     $('.nav-item').removeClass('active');
     $('.nav-link[href="' + BASE_LANG + PAGE + '"]').parent().addClass('active');
@@ -773,5 +772,19 @@ function comment(course_id){
         });
 
       }
+  });
+}
+
+function copyToClipboard(text) {
+  var sampleTextarea = document.createElement("textarea");
+  document.body.appendChild(sampleTextarea);
+  sampleTextarea.value = text; //save main text in it
+  sampleTextarea.select(); //select textarea contenrs
+  document.execCommand("copy");
+  document.body.removeChild(sampleTextarea);
+
+  swal("Copied to clipboard", {
+    button: false,
+    timer: 1000,
   });
 }

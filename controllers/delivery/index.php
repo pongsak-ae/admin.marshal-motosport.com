@@ -216,7 +216,7 @@
                         </div>
                         <div class="col-md-2 col-12 mb-3">
                             <div class="d-none d-sm-inline-block" style="margin-bottom: 3.1rem;"></div>
-                            <button type="submit" class="btn btn-yellow ms-auto">
+                            <button type="submit" id="submit_delivery_type" class="btn btn-yellow ms-auto">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <line x1="12" y1="5" x2="12" y2="19" />
@@ -257,3 +257,4 @@
   
 <div id="modal_gallery_image"></div>
 <div id="modal_remove"></div>
+<div id="modal_remove_type"></div>

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function() {
 	// $("#btn_banner").on('click', function(){
 	// 	add_banner();
 	// });

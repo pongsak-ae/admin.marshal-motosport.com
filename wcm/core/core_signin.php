@@ -105,7 +105,7 @@
 	<input type="hidden" name="refer" id="refer" value="<?=htmlspecialchars($PageReferer, ENT_QUOTES)?>" />
 	</form>
 	<script type="text/javascript">
-		$(document).ready(function(){
+		$(function() {
 			$("#loginname").focus();
 			$(document).keydown(function(event) {
 				if (event.keyCode == '13') {

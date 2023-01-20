@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function() {
 
     fnc_change_iconPass();
     validator_login();

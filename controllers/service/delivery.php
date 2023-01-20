@@ -17,7 +17,7 @@ if ($cmd != "") {
     if($cmd == "delivery"){
         $sql = "SELECT * , tb_delivery.CREATEDATETIME, tb_delivery.DELIVERY_TYPE_ID
                 FROM tb_delivery
-                INNER JOIN tb_delivery_type ON tb_delivery.DELIVERY_ID = tb_delivery_type.DELIVERY_TYPE_ID";
+                INNER JOIN tb_delivery_type ON tb_delivery.DELIVERY_TYPE_ID = tb_delivery_type.DELIVERY_TYPE_ID";
         $sql_param = array();
         $ds = null;
         $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
@@ -96,6 +96,75 @@ if ($cmd != "") {
             if (!empty($_POST['edit_delivery_type'])) $sql_param['DELIVERY_TYPE_ID'] = $_POST['edit_delivery_type'];
             if (!empty($_POST['edit_delivery_price'])) $sql_param['DELIVERY_PRICE'] = $_POST['edit_delivery_price'];
             $res = $DB->executeUpdate('tb_delivery', 1, $sql_param);
+        }else{
+            $res = 1;
+        }
+
+        if ($res > 0) {
+            $response['status'] = true;
+            $response['msg'] = 'Update successfully';
+        }else{
+            $response['status'] = false;
+            $response['msg'] = 'Update unsuccessfully';
+        }
+
+    } else if ($cmd == "add_delivery_type"){
+        $delivery_type_th   = isset($_POST['delivery_type_th']) ? $_POST['delivery_type_th'] : "";
+        $delivery_type_en   = isset($_POST['delivery_type_en']) ? $_POST['delivery_type_en'] : "";
+
+        $sql_param = array();
+        $new_id = "";
+        $sql_param['DELIVERY_TYPE_NAME_TH']  = $delivery_type_th;
+        $sql_param['DELIVERY_TYPE_NAME_EN']  = $delivery_type_en;
+        $res = $DB->executeInsert('tb_delivery_type', $sql_param, $new_id);
+
+        if ($res > 0) {
+            $response['status'] = true;
+            $response['msg'] = 'Create successfully';
+        }else{
+            $response['status'] = false;
+            $response['msg'] = 'Create unsuccessfully';  
+        }
+
+    } else if ($cmd == "active_type"){
+        $id         = isset($_POST['id']) ? $_POST['id'] : "";
+        $active     = isset($_POST['active']) ? $_POST['active'] : "";
+        
+        $sql_param = array();
+        $sql_param['DELIVERY_TYPE_ID']        = $id;
+        $sql_param['DELIVERY_TYPE_STATUS']    = $active;
+        $res = $DB->executeUpdate('tb_delivery_type', 1, $sql_param);
+
+        if ($res > 0) {
+            $response['status'] = true;
+            $response['msg'] = 'Update successfully';
+        }else{
+            $response['status'] = false;
+            $response['msg'] = 'Update unsuccessfully';
+        }
+
+    } else if ($cmd == "remove_type"){
+        $id    = isset($_POST['id']) ? $_POST['id'] : "";
+        $sql = "DELETE FROM tb_delivery_type WHERE DELIVERY_TYPE_ID = @id";
+        $sql_param = array();
+        $sql_param['id'] = $id;
+        $res = $DB->execute($sql, $sql_param);
+
+        if ($res > 0) {
+            $response['status'] = true;
+            $response['msg'] = 'Remove successfully';
+        }else{
+            $response['status'] = false;
+            $response['msg'] = 'Remove unsuccessfully';
+        }
+
+    } else if ($cmd == "edit_type"){
+        if (!empty($_POST['type_id'])){
+            $sql_param = array();
+            $sql_param['DELIVERY_TYPE_ID'] = $_POST['type_id'];
+            if (!empty($_POST['type_th'])) $sql_param['DELIVERY_TYPE_NAME_TH'] = $_POST['type_th'];
+            if (!empty($_POST['type_en'])) $sql_param['DELIVERY_TYPE_NAME_EN'] = $_POST['type_en'];
+            $res = $DB->executeUpdate('tb_delivery_type', 1, $sql_param);
         }else{
             $res = 1;
         }

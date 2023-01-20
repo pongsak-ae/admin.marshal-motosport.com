@@ -1,5 +1,5 @@
 
-$(document).ready(function(){
+$(function() {
 	var all_tiny_target = $("textarea.fulltext");
 	for (var i=0;i<all_tiny_target.length;i++) {
 		var obj_config = {

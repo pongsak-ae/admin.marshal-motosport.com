@@ -1,6 +1,6 @@
 
 
-$(document).ready(function(){
+$(function() {
 	$("#ajax-loading")
 	.bind("ajaxSend", function(evt, request, settings){
 		if(settings.autoLoading)

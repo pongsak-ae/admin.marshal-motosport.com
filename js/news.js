@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function() {
     var edit_toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],
@@ -26,6 +26,19 @@ $(document).ready(function(){
     });
 
     datatable_news(edit_quill_th, edit_quill_en);
+    
+    $('#news_public, #edit_news_public').daterangepicker({
+        timePicker: true,
+        startDate: moment(),
+        singleDatePicker: true,
+        showDropdowns: true,
+        timePicker24Hour: true,
+        applyButtonClasses: "btn-yellow",
+        locale: {
+            format: 'YYYY-MM-DD HH:mm'
+        },
+        drops: "auto",
+    });
 
     $("#frm_add_news").validate({
         ignore: ".quill *",
@@ -184,6 +197,7 @@ $(document).ready(function(){
         $('#frm_add_news')[0].reset();
         $('#frm_add_news').find('.is-invalid').removeClass("is-invalid");
         $('#frm_add_news').find('.is-valid').removeClass("is-valid");
+        $('#news_public').val(moment().format("YYYY-MM-DD HH:mm"));
     });
 
 });
@@ -209,7 +223,7 @@ function datatable_news(edit_quill_th, edit_quill_en){
             { "data": "NEWS_NAME_EN"},
             { "data": "NEWS_VDO_ID" , render : video},
             { "data": "NEWS_STATUS", render : status},
-            { "data": "CREATEDATETIME", render: datetime},
+            { "data": "NEWS_PUBLICDATETIME", render: datetime},
             { "data": "NEWS_ID", render: tools}
         ],
         columnDefs: [
@@ -257,18 +271,18 @@ function datatable_news(edit_quill_th, edit_quill_en){
           $.ajax({
               type: "post",
               url: BASE_LANG + "service/news.php",
-              data: {
-                  "cmd": "remove",
-                  "id": id
-              },
-              dataType: "json",
-              beforeSend: function(){
+                data: {
+                    "cmd": "remove",
+                    "id": id
+                },
+                dataType: "json",
+                beforeSend: function(){
                 $(':button[type="submit"]').prop('disabled', true);
-            },
-            complete: function(){
-                $(':button[type="submit"]').prop('disabled', false);
-            },
-              success: function(res) {
+                },
+                complete: function(){
+                    $(':button[type="submit"]').prop('disabled', false);
+                },
+                success: function(res) {
                   var status = res['status'];
                   var msg = res['msg'];
                   if (status == true) {
@@ -325,7 +339,8 @@ function datatable_news(edit_quill_th, edit_quill_en){
         $('#edit_title_en').val(data.titleEn);
         $('#edit_new_youtube_url').val(data.video);
         $('#edit_news_iframe_src').attr('src', 'https://www.youtube.com/embed/' + data.video);
-        
+        $('#edit_news_public').val(data.public);
+
         $("#edit_news_img").on('change', function(){
             var file = this.files[0];
             var reader = new FileReader();
@@ -382,6 +397,7 @@ function tools(data, type, row) {
         tools += ' data-detail-th = "'  + encode_quote(row['NEWS_DETAIL_TH']) + '"';
         tools += ' data-detail-en = "'  + encode_quote(row['NEWS_DETAIL_EN']) + '"';
         tools += ' data-video = "'      + row['NEWS_VDO_ID'] + '"';
+        tools += ' data-public = "'     + row['NEWS_PUBLICDATETIME'] + '"';
         tools += ' name="edit_news" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
         tools += '<button name="remove" data-id="' + data + '" class="btn btn-danger mx-1"><i class="far fa-trash-alt"></i></button>';
     return tools;

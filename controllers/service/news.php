@@ -15,7 +15,7 @@ $cmd = isset($_POST['cmd']) ? $_POST['cmd'] : "";
 
 if ($cmd != "") {
     if($cmd == "news"){
-        $sql = "SELECT * FROM tb_news";
+        $sql = "SELECT * FROM tb_news ORDER BY NEWS_ID DESC";
         $sql_param = array();
         $ds = null;
         $res = $DB->query($ds, $sql, $sql_param, 0, -1, "ASSOC");
@@ -56,6 +56,7 @@ if ($cmd != "") {
         }
 
     } else if ($cmd == "add_news"){
+        $news_public              = isset($_POST['news_public']) ? $_POST['news_public'] : "";
         $add_title_th           = isset($_POST['add_title_th']) ? $_POST['add_title_th'] : "";
         $add_title_en           = isset($_POST['add_title_en']) ? $_POST['add_title_en'] : "";
         $add_news_detail_th     = isset($_POST['add_news_detail_th']) ? $_POST['add_news_detail_th'] : "";
@@ -80,7 +81,7 @@ if ($cmd != "") {
         $sql_param['NEWS_VDO_ID']       = $new_youtube_url;
         $sql_param['NEWS_NAME_EN']      = $add_title_en;
         $sql_param['NEWS_DETAIL_EN']    = $add_news_detail_en;
-
+        $sql_param['NEWS_PUBLICDATETIME']  = $news_public;
         $res = $DB->executeInsert('tb_news', $sql_param, $new_id);
 
         if ($res > 0) {
@@ -104,7 +105,7 @@ if ($cmd != "") {
                 $sql_param['NEWS_IMG']  = $image_news;
             }
 
-            $auto_play              = ($_POST['auto_play'] == 'on') ? '1' : '0';
+            $auto_play              = (isset($_POST['auto_play']) == 'on') ? '1' : '0';
             $news_video              = 'https://www.youtube.com/embed/' . $_POST['edit_new_youtube_url'] . '?autoplay=' . $auto_play . '&amp;mute=1';
 
             if (!empty($_POST['edit_title_th'])) $sql_param['NEWS_NAME_TH'] = $_POST['edit_title_th'];
@@ -113,6 +114,7 @@ if ($cmd != "") {
             if (!empty($_POST['edit_new_youtube_url'])) $sql_param['NEWS_VDO'] = $news_video;
             if (!empty($_POST['edit_news_detail_th'])) $sql_param['NEWS_DETAIL_TH'] = $_POST['edit_news_detail_th'];
             if (!empty($_POST['edit_news_detail_en'])) $sql_param['NEWS_DETAIL_EN'] = $_POST['edit_news_detail_en'];
+            if (!empty($_POST['edit_news_public'])) $sql_param['NEWS_PUBLICDATETIME'] = $_POST['edit_news_public'];
             $res = $DB->executeUpdate('tb_news', 1, $sql_param);
         }else{
             $res = 1;

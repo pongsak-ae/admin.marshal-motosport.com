@@ -2,24 +2,40 @@
 
 $PAGE_VAR["js"][] = "news";
 
-if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['group'] != 2){
+if($_SESSION['status'] != true || ($_SESSION['isAdmin'] != true && $_SESSION['group'] != '2')){
   header("Location: ".WEB_META_BASE_LANG."login/");
 }
 
 ?>
 <style>
-	.ql-toolbar.ql-snow {
-		background: white !important;
-	}
-	.ql-editor.ql-blank::before {
-  		color: white !important;
-	}
+    .ql-toolbar.ql-snow {
+      background: white !important;
+    }
+    .ql-editor.ql-blank::before {
+        color: white !important;
+    }
     .truncate {
         max-width:200px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     } 
+    .daterangepicker {
+      background-color: #232e3c !important;
+      border: 1px solid #f59f00 !important;
+    }
+    .daterangepicker .calendar-table {
+      background-color: #232e3c !important;
+    }
+    .daterangepicker td.active, .daterangepicker td.active:hover {
+        background-color: #f59f00 !important;
+    }
+    .daterangepicker td.available:hover, .daterangepicker th.available:hover {
+        background-color: #f59f00 !important;
+    }
+    .daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+      background-color: transparent !important;
+    }
 </style>
 
 <div class="container-xl">
@@ -53,7 +69,7 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['gro
             <th>Title en</th>
             <th>Video</th>
             <th>Active</th>
-            <th>Createdatetime</th>
+            <th>PUBLICDATETIME</th>
             <th>Tools</th>
           </tr>
         </thead>
@@ -62,7 +78,7 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['gro
   </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal_add" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal_add" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-status bg-yellow"></div>
@@ -73,6 +89,10 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['gro
                 <div class="modal-body">
                 <form id="frm_add_news">
                   <div class="row">
+                    <div class="col-md-6 col-12 mb-3">
+                      <label class="form-label">Public Datetime</label>
+                      <input type="text" id="news_public" name="news_public" class="form-control"  placeholder="Please select">
+                    </div> 
                     <div class="col-12 mb-3">
                       <div class="card card-sm">
                         <a class="d-block" target="_blank">
@@ -139,6 +159,8 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['gro
                             </div>
                         </div>
                     </div>
+
+
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -158,9 +180,8 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['gro
         </div>
     </div>
 </div>
-
-<div class="modal modal-blur fade" id="modal_edit" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal modal-blur fade" id="modal_edit" role="dialog" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-status bg-yellow"></div>
             
@@ -171,6 +192,10 @@ if($_SESSION['status'] != true && $_SESSION['isAdmin'] != true && $_SESSION['gro
                 <div class="modal-body">
                   <form id="from_edit_news">
                     <div class="row">
+                        <div class="col-md-6 col-12 mb-3">
+                          <label class="form-label">Public Datetime</label>
+                          <input type="text" id="edit_news_public" name="edit_news_public" class="form-control"  placeholder="Please select">
+                        </div> 
                         <div class="col-12 mb-3">
                           <div class="card card-sm">
                             <a class="d-block" target="_blank">

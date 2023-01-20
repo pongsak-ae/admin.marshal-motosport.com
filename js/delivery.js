@@ -1,6 +1,6 @@
-$(document).ready(function(){
+$(function() {
     datatable();
-
+    
     $("#frm_add_delivery").validate({
         rules: {
             add_delivery_name_th: {
@@ -104,12 +104,58 @@ $(document).ready(function(){
                   var status = res['status'];
                   var msg = res['msg'];
                   if (status == true) {
-                      alert_center('Process upedate', msg, "success")
+                      alert_center('Process update', msg, "success")
                       dtb_delivery.ajax.reload();
                       $('#modal_edit').modal('hide');
                   }else{
-                      alert_center('Process upedate', msg, "error")
+                      alert_center('Process update', msg, "error")
                   }
+                }
+            });
+
+        } 
+    });
+
+    $("#frm_delivery_type").validate({
+        rules: {
+            delivery_type_th: {
+            required: true
+            },
+            delivery_type_en : {
+            required: true
+            }
+        },
+        errorPlacement: function(error, element) {
+        },
+        errorClass: "help-inline text-danger",
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error').removeClass('has-success');
+            $(element).closest('.form-group').prevObject.addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');//.addClass('has-success');
+            $(element).closest('.form-group').prevObject.removeClass('is-invalid').addClass('is-valid');
+        },
+        submitHandler: function(form, e) {
+            e.preventDefault();
+            var data = new FormData($(form)[0]);
+            data.append("cmd", "add_delivery_type");
+            $.ajax({
+                type: "post",
+                url: BASE_LANG + "service/delivery.php",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(res){
+                    if (res.status == true) {
+                        $('#modal_add').modal('hide');
+                        alert_center('Process add', res.msg, "success")
+                        dtb_delivery_type.ajax.reload();
+                    } else {
+                        alert_center('Process add', res.msg, "error")
+                    }
                 }
             });
 
@@ -128,10 +174,9 @@ $(document).ready(function(){
         $('#frm_delivery_type').find('.is-valid').removeClass("is-valid");
     });
 
-
     $('#btn_delivery_type').on('click', function(){
         $('#modal_add_type').modal('show');
-        get_delivery_type();
+        datatable_type();
     });
 
 });
@@ -252,6 +297,169 @@ function datatable(){
     });
 }
 
+function datatable_type(){
+    if ( $.fn.DataTable.isDataTable('#tb-delivery-type') ) {
+        $('#tb-delivery-type').DataTable().destroy();
+    }
+    dtb_delivery_type = $("#tb-delivery-type").DataTable({
+        dom: '<"ms-3"B>rt<"d-flex justify-content-between"ip>',
+        responsive: true,
+        pageLength: 10,
+        ordering: false,
+        ajax: {
+            "url" : BASE_LANG + "service/delivery.php",
+            "type": "POST",
+            "data": function( d ){ 
+                d.cmd = "delivery_type";
+            }
+        },
+        type: "JSON",
+        columns: [
+            { "data": "DELIVERY_TYPE_NAME_TH"},
+            { "data": "DELIVERY_TYPE_NAME_EN"},
+            { "data": "DELIVERY_TYPE_STATUS", render : type_status },
+            { "data": "DELIVERY_TYPE_ID", render: type_tools}
+        ],
+        columnDefs: [
+            { targets: [0, 1], className: "truncate"},
+            { targets: 2, className: "text-center", width: "10%"},
+            { targets: 3, className: "text-center", width: "10%"},
+        //   { targets: [1, 2], width: "30%" }
+        ]
+    });
+
+    $('#tb-delivery-type tbody').on( 'click', '[name="active_type"]', function (e) {
+        var row = $(this).closest("tr"); 
+        var id   = row.find('[name="active_type"]').attr('data-id');
+        var active  = (this.checked == true) ? 'on' : 'off';
+
+        $.ajax({
+            type: "post",
+            url: BASE_LANG + "service/delivery.php",
+            data: {
+                "cmd": "active_type",
+                "id": id,
+                "active": active
+            },
+            dataType: "json",
+            beforeSend: function(){
+                $(':button[type="submit"]').prop('disabled', true);
+            },
+            complete: function(){
+                $(':button[type="submit"]').prop('disabled', false);
+            },
+            success: function(res) {
+                var status = res['status'];
+                var msg = res['msg'];
+                if (status == true) {
+                    alert_center('Process update', msg, "success")
+                    dtb_delivery_type.ajax.reload();
+                }else{
+                    alert_center('Process update', msg, "error")
+                }
+            }
+        });
+    });
+
+    $('#tb-delivery-type tbody').on( 'click', '[name="remove_type"]', function (e) {
+        var row = $(this).closest("tr"); 
+        var id   = row.find('[name="remove_type"]').attr('data-id');
+
+        // MODAL REMOVE COURSE
+        // var remove_modalText  = 'Do you really want to remove this delivery?';
+        // var modalID           = 'modal_remove_typeGEN';
+        // var btn_remove_id     = 'submit-delivery-type';
+        // modal_remove(btn_remove_id, modalID, remove_modalText, 'modal_remove_type');
+
+        // $('#' + btn_remove_id).on('click', function(){
+            $.ajax({
+                type: "post",
+                url: BASE_LANG + "service/delivery.php",
+                data: {
+                    "cmd": "remove_type",
+                    "id": id
+                },
+                dataType: "json",
+            beforeSend: function(){
+                $(':button[type="submit"]').prop('disabled', true);
+            },
+            complete: function(){
+                $(':button[type="submit"]').prop('disabled', false);
+            },
+                success: function(res) {
+                    var status = res['status'];
+                    var msg = res['msg'];
+                    if (status == true) {
+                        alert_center('Process remove', msg, "success")
+                        dtb_delivery_type.ajax.reload();
+                        // $('#' + modalID).modal('hide');
+                    }else{
+                        alert_center('Process remove', msg, "error")
+                    }
+                }
+            });
+        // });
+    });
+
+    $('#tb-delivery-type tbody').on( 'click', '[name="edit_type"]', function (e) {
+        $(this).children('.fa-save, .fa-edit').toggleClass("fa-save fa-edit");
+        $(this).attr('name','edit_save');
+        var row = $(this).closest("tr");
+        var tds = row.find("td").not(':last');
+        
+        $.each(tds, function(i, el) {
+            var txt = $(this).text();
+            if(i != 2){
+                $(this).html("").append("<input class='form-control-tb form-control-tb-sm' id=\""+i+"\" style='width: 100%;' type='text' value=\""+txt+"\">");
+            } 
+        });
+
+    });
+
+    $('#tb-delivery-type tbody').on( 'click', '[name="edit_save"]', function (e) {
+        $(this).attr('name','edit_type');
+        var cars = new Array();
+        var row_save = $(this).closest("tr");
+        var id   = row_save.find('[name="edit_type"]').attr('data-id');
+        var tds_save  = row_save.find('td').not(':last');
+        $.each(tds_save, function(i, el) {
+            if(i != 2){
+                var type_val = $(this).find("input").val()
+            }
+            cars.push(type_val); 
+        });
+
+        $.ajax({
+            type: "post",
+            url: BASE_LANG + "service/delivery.php",
+            data: {
+                "cmd": "edit_type",
+                "type_id" : id,
+                "type_th": cars[0],
+                "type_en": cars[1]
+            },
+            dataType: "json",
+            beforeSend: function(){
+                $(':button[type="submit"]').prop('disabled', true);
+            },
+            complete: function(){
+                $(':button[type="submit"]').prop('disabled', false);
+            },
+            success: function(res) {
+                var status = res['status'];
+                var msg = res['msg'];
+                if (status == true) {
+                    alert_center('Process update', msg, "success")
+                    dtb_delivery_type.ajax.reload();
+                }else{
+                    alert_center('Process update', msg, "error")
+                }
+            }
+        });
+    });
+    
+}
+
 function status(data, type, row, meta){
     var checked = (data == 'on') ? 'checked' : '';
     var active_gHTML = '';
@@ -297,58 +505,12 @@ function tools(data, type, row) {
     return tools;
 }
 
-function get_delivery_type(){
-    $.ajax({
-        type: "post",
-        url: BASE_LANG + "service/delivery.php",
-        data: {
-            "cmd" : "delivery_type",
-        },
-        dataType: "json",
-        beforeSend: function() {
-        },
-        success: function (res) {
-            if (res.status) {
-                if ( $.fn.DataTable.isDataTable('#tb-delivery-type') ) {
-                    $('#tb-delivery-type').DataTable().destroy();
-                  }
-
-                $('#tb-tbody').empty();
-                $.each(res.data, function(key, value){
-                    var body_row = $('<tr>');
-                    $.each(value, function (i, v) {
-                        body_row.append($('<td>').text(v));
-                    });
-                    $('#tb-tbody').append(body_row);
-                });
-
-                $("#tb-delivery-type").DataTable({
-                    dom: '<"ms-3"B>rt<"d-flex justify-content-between"ip>',
-                    responsive: true,
-                    pageLength: 10,
-                    ordering: false,
-                    columnDefs: [
-                        { targets: [0, 1], className: "truncate"},
-                        { targets: 2, className: "text-center", width: "10%", render : type_status },
-                        { targets: 3, className: "text-center", width: "10%", render : type_tools },
-                    ]
-                });
-
-            }
-        },
-        error: function(){
-        },
-        complete: function () {
-        }
-    });
-}
-
 function type_status(data, type, row, meta){
     var checked = (data == 'on') ? 'checked' : '';
     var active_gHTML = '';
     active_gHTML += '<div class="ms-auto">';
     active_gHTML += '<label class="form-check form-switch form-check-inline m-auto mt-1">';
-    active_gHTML += '<input data-id="' + row['DELIVERY_TYPE_ID'] + '" name="active" class="cursor-pointer form-check-input" type="checkbox" ' + checked + '>';
+    active_gHTML += '<input data-id="' + row['DELIVERY_TYPE_ID'] + '" name="active_type" class="cursor-pointer form-check-input" type="checkbox" ' + checked + '>';
     active_gHTML += '</label>';
     active_gHTML += '</div>';
     return active_gHTML;
@@ -357,12 +519,8 @@ function type_status(data, type, row, meta){
 function type_tools(data, type, row) {
     var tools = '<button ';
         tools += ' data-id = "'     + data + '"';
-        tools += ' data-image = "'  + row['GALLERY_IMAGE'] + '"';
-        tools += ' data-name = "'   + row['GALLERY_NAME'] + '"';
-        tools += ' data-alt = "'    + row['GALLERY_ALT'] + '"';
-        tools += ' name="edit_gallery" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
-        tools += '<button name="remove_gallery" data-rm-name = "' + row['GALLERY_NAME'] ;
-        tools += '" data-rm-id="' + data + '" class="btn btn-danger mx-1">'
+        tools += ' name="edit_type" type="button" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
+        tools += '<button type="button" name="remove_type"  data-id="' + data + '" class="btn btn-danger mx-1">'
         tools += '<i class="far fa-trash-alt"></i></button>';
     return tools;
 }

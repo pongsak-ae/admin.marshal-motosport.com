@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function() {
     datatable_register = $("#datatable_register").DataTable({
         "scrollX": true,
         "pageLength": 10,
