@@ -53,7 +53,13 @@
                                           <th>QTY</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tb-tbody"></tbody>
+                                    <tfoot>
+                                        <tr>
+                                          <th colspan="3" rowspan="1"></th>
+                                          <th class="text-center" rowspan="1" colspan="1">0 ( 0 Total)</th>
+                                          <th class="text-center" rowspan="1" colspan="1">0 ( 0 Total)</th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

@@ -237,8 +237,40 @@ $(function() {
             columnDefs: [
                 { targets: [0], className: "text-center", width: "7%" },
                 { targets: [1, 2], className: "truncate-200", width: "30%" },
-                { targets: [3,4], className: "text-center", width: "10%" },
-            ]
+                { targets: [3,4], className: "sum text-center", width: "10%" },
+            ],
+            footerCallback: function(row, data, start, end, display) {
+                var api = this.api();
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                i.replace(/[\$,-]/g, '') * 1 :
+                typeof i === 'number' ?
+                    i : 0;
+                };
+                
+                api.columns('.sum').every(function () {
+                    var total = api
+                    .column(this.index())
+                    .data()
+                    .reduce(function (a, b) {
+                        return parseFloat(a) + parseFloat(b);
+                    }, 0);
+    
+                    total = total ? total : 0;
+                    
+                    var pageTotal = api
+                    .column(this.index(), { page: 'current' })
+                    .data()
+                    .reduce(function (a, b) {
+                        return parseFloat(a) + parseFloat(b);
+                    }, 0);
+
+                    $(this.footer()).html(
+                        $.fn.dataTable.render.number( ',', '.', 2).display(pageTotal) +' ( '+ $.fn.dataTable.render.number( ',', '.', 2).display(total) +' Total)'
+                    );
+                });
+            }
         });
 
 
