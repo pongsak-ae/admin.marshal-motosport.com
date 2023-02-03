@@ -78,6 +78,10 @@ $(function() {
             add_product_price : {
                 required: true,
                 numberOnly: true
+            },
+            add_product_stock : {
+                required: true,
+                number: true
             }
         },
         errorPlacement: function(error, element) {
@@ -134,6 +138,10 @@ $(function() {
             edit_product_price : {
                 required: true,
                 numberOnly: true
+            },
+            edit_product_stock : {
+                required: true,
+                number: true
             }
         },
         errorPlacement: function(error, element) {
@@ -278,14 +286,15 @@ function datatable(edit_quill_th, edit_quill_en){
             { "data": "PRODUCT_PRICE" },
             { "data": "PRODUCT_STATUS", render : product_status},
             { "data": "CREATEDATETIME", render: datetime},
+            { "data": "PRODUCT_STOCK"},
             { "data": "PRODUCT_ID", render: tools}
         ],
         columnDefs: [
             { targets: [0], className: "text-center", width: "10%" },
             { targets: [1], className: "text-center", width: "5%" },
             { targets: [2], className: "text-center", width: "5%" },
-            { targets: [3, 4], className: "truncate-200", width: "30%" },
-            { targets: [5,6,7,8], className: "text-center", width: "10%" },
+            { targets: [3, 4], className: "truncate-200", width: "20%" },
+            { targets: [5,6,7,8, 9], className: "text-center", width: "10%" },
         ]
     });
 
@@ -372,6 +381,8 @@ function datatable(edit_quill_th, edit_quill_en){
         $('#edit_product_id').val(data.id);
         $('#edit_product_type option[value="' + data.type + '"]').attr('selected', true);
         $('#edit_product_tag option[value="' + data.tag + '"]').attr('selected', true);
+        $('#edit_product_stock').val(data.stock);
+        
 
         $.each(JSON.parse(decode_quote(data.img)), function(k, v){
             $('#edit_show_product_img_' + (k + 1)).attr("src", BASE_URL + 'images/product/' + v['file_name']);
@@ -391,8 +402,8 @@ function datatable(edit_quill_th, edit_quill_en){
             }
         });
 
-        edit_quill_th.root.innerHTML = decode_quote(data.detailTh);
-		edit_quill_en.root.innerHTML = decode_quote(data.detailEn);
+        edit_quill_th.root.innerHTML = decode_quote(data.detailTh).replaceAll('div', 'p');
+		edit_quill_en.root.innerHTML = decode_quote(data.detailEn).replaceAll('div', 'p');
 
     });
 
@@ -722,7 +733,7 @@ function product_tag(data, type, row) {
 }
 
 function datetime(data, type, row, meta){
-    return moment(data).format('YYYY-MM-DD HH:mm');
+    return moment(data).format('YYYY-MM-DD');
 }
 
 function tools(data, type, row) {
@@ -736,6 +747,7 @@ function tools(data, type, row) {
         tools += ' data-price = "'    + row['PRODUCT_PRICE'] + '"';
         tools += ' data-img = "'      + encode_quote(row['PRODUCT_IMG']) + '"';
         tools += ' data-tag = "'      + row['PRODUCT_TAG'] + '"';
+        tools += ' data-stock = "'     + row['PRODUCT_STOCK'] + '"';
         tools += ' name="update" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
         tools += '<button name="remove" data-id="' + data + '" class="btn btn-danger mx-1"><i class="far fa-trash-alt"></i></button>';
     return tools;

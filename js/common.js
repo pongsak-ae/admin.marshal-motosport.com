@@ -42,10 +42,42 @@ $(function() {
     });
     
     $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+
+    $('#currency').on("click", function() {
+      $.ajax({
+          type: "post",
+          url: BASE_LANG + "service/setting.php",
+          data: {
+            "cmd": "currency",
+            "thb": $('#currency_thb').val()
+          },
+          dataType: "json",
+          beforeSend: function(){
+            $(this).prop('disabled', true);
+          },
+          complete: function(){
+            $(this).prop('disabled', false);
+          },
+          success: function(res) {
+              if (res.status == true) {
+                $("#currency_thb").val(res.data).trigger("change");
+                $("#currency_text").text(res.data);
+                alert_center('Currency', res.msg, "success")
+              }else{
+                alert_center('Currency', res.msg, "warning")
+              }
+          }
+      });
+  });
+
 });
 
 $.validator.addMethod("numberOnly", function(value, element, param) {
-  return this.optional(element) || /^[0-9].+$/i.test(value);
+  return this.optional(element) || /^[0-9\.]+$/i.test(value);
+}, "Please enter only number !");
+
+$.validator.addMethod("number", function(value, element, param) {
+  return this.optional(element) || /^[0-9]+$/i.test(value);
 }, "Please enter only number !");
 
 $.validator.addMethod("is_english", function(value, element, param) {

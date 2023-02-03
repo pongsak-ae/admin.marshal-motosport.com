@@ -719,4 +719,15 @@ function product_type(){
     return $ds;
 }
 
+function currency(){
+	$DB = OMDb::singleton();
+    $sql = "SELECT * FROM tb_setting";
+
+    $sql_param = array();
+    $ds = null;
+    $res = $DB->query($ds, $sql, $sql_param, 0, 1, "ASSOC");
+
+    return $ds[0]['SETTING_THB_TO_USD'];
+}
+
 ?>

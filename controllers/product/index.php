@@ -60,6 +60,7 @@
             <th>PRODUCT PRICE</th>
             <th>PRODUCT ACTIVE</th>
             <th>Createdatetime</th>
+            <th>STOCK</th>
             <th>Tools</th>
           </tr>
         </thead>
@@ -178,6 +179,12 @@
                                             <option value="SALE">SALE</option>
                                         </select>
                                         <label for="add_product_tag">Select</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel" id="add_product_stock" name="add_product_stock" class="form-control" placeholder="Enter stock">
+                                        <label for="add_product_stock">Product stock</label>
                                     </div>
                                 </div>
                             </div>
@@ -313,6 +320,12 @@
                                     <label for="edit_product_tag">Select</label>
                                 </div>
                             </div>
+                            <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel" id="edit_product_stock" name="edit_product_stock" class="form-control" placeholder="Enter stock">
+                                        <label for="edit_product_stock">Product stock</label>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>

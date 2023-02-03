@@ -30,6 +30,7 @@ if ($cmd != "") {
                         , tb_product.CREATEDATETIME
                         , PRODUCT_TAG
                         , (SELECT MAX(PRODUCT_ROWS) FROM tb_product WHERE tb_product.PRODUCT_STATUS = 'on') AS max_order
+                        , PRODUCT_STOCK
                 FROM tb_product
                 INNER JOIN tb_product_type ON tb_product.PRODUCT_TYPE_ID = tb_product_type.PRODUCT_TYPE_ID 
                 ORDER BY PRODUCT_ROWS";
@@ -88,6 +89,7 @@ if ($cmd != "") {
         $add_product_detail_th  = isset($_POST['add_product_detail_th']) ? $_POST['add_product_detail_th'] : "";
         $add_product_detail_en  = isset($_POST['add_product_detail_en']) ? $_POST['add_product_detail_en'] : "";
         $add_product_tag        = isset($_POST['add_product_tag']) ? $_POST['add_product_tag'] : "";
+        $add_product_stock      = isset($_POST['add_product_stock']) ? $_POST['add_product_stock'] : "";
 
         $FILES_ARRAY = array();
         if(!empty($_FILES["add_product_img"]["name"])) {
@@ -113,6 +115,7 @@ if ($cmd != "") {
         $sql_param['PRODUCT_DETAIL_EN']     = $add_product_detail_en;
         $sql_param['PRODUCT_TAG']           = $add_product_tag;
         $sql_param['PRODUCT_IMG']           = $JSON_FILE;
+        $sql_param['PRODUCT_STOCK']         = intval($add_product_stock);
         $res = $DB->executeInsert('tb_product', $sql_param, $new_id);
 
         if ($res > 0) {
@@ -138,6 +141,7 @@ if ($cmd != "") {
             if (!empty($_POST['edit_product_detail_en'])) $sql_param['PRODUCT_DETAIL_EN'] = $_POST['edit_product_detail_en'];
             if (!empty($_POST['edit_product_price'])) $sql_param['PRODUCT_PRICE'] = $_POST['edit_product_price'];
             if (!empty($_POST['edit_product_tag'])) $sql_param['PRODUCT_TAG'] = $_POST['edit_product_tag'];
+            if (!empty($_POST['edit_product_stock'])) $sql_param['PRODUCT_STOCK'] = $_POST['edit_product_stock'];
 
             $FILES_ARRAY = array();
             if(!empty($_FILES["edit_product_img"]["name"])) {
