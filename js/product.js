@@ -82,6 +82,9 @@ $(function() {
             add_product_stock : {
                 required: true,
                 number: true
+            },
+            add_product_price_sale : {
+                numberOnly: true
             }
         },
         errorPlacement: function(error, element) {
@@ -98,9 +101,11 @@ $(function() {
         submitHandler: function(form, e) {
             e.preventDefault();
             var data = new FormData($(form)[0]);
+
             data.append("cmd", "add_product");
             data.append("add_product_detail_th", quill_th.root.innerHTML);
             data.append("add_product_detail_en", quill_en.root.innerHTML);
+            data.append("add_product_price_sale", $('#add_product_price_sale').val());
             $.ajax({
                 type: "post",
                 url: BASE_LANG + "service/product.php",
@@ -119,7 +124,6 @@ $(function() {
                     }
                 }
             });
-
         } 
     });
 
@@ -142,6 +146,9 @@ $(function() {
             edit_product_stock : {
                 required: true,
                 number: true
+            },
+            edit_product_price_sale : {
+                numberOnly: true
             }
         },
         errorPlacement: function(error, element) {
@@ -162,6 +169,7 @@ $(function() {
             data.append("cmd", "edit_product");
             data.append("edit_product_detail_th", edit_quill_th.root.innerHTML);
             data.append("edit_product_detail_en", edit_quill_en.root.innerHTML);
+            // data.append("edit_product_price_sale", $('#edit_product_price_sale').val());
             $.ajax({
                 type: "post",
                 url: BASE_LANG + "service/product.php",
@@ -262,6 +270,20 @@ $(function() {
         datatable_type();
     });
 
+    $('#add_product_tag').on('change', function(){
+        if(this.value == 'SALE'){
+            $('#add_product_price_sale').removeClass('d-none');
+        }else{
+            $('#add_product_price_sale').addClass('d-none');
+        }
+    });
+    $('#edit_product_tag').on('change', function(){
+        if(this.value == 'SALE'){
+            $('#edit_product_price_sale').removeClass('d-none');
+        }else{
+            $('#edit_product_price_sale').addClass('d-none');
+        }
+    });
 });
 
 function datatable(edit_quill_th, edit_quill_en){
@@ -284,9 +306,9 @@ function datatable(edit_quill_th, edit_quill_en){
             { "data": "PRODUCT_NAME_TH"},
             { "data": "PRODUCT_TYPE_ID", render: product_type },
             { "data": "PRODUCT_PRICE" },
+            { "data": "PRODUCT_PRICE_SALE" },
             { "data": "PRODUCT_STATUS", render : product_status},
             { "data": "CREATEDATETIME", render: datetime},
-            { "data": "PRODUCT_STOCK"},
             { "data": "PRODUCT_ID", render: tools}
         ],
         columnDefs: [
@@ -382,7 +404,7 @@ function datatable(edit_quill_th, edit_quill_en){
         $('#edit_product_type option[value="' + data.type + '"]').attr('selected', true);
         $('#edit_product_tag option[value="' + data.tag + '"]').attr('selected', true);
         $('#edit_product_stock').val(data.stock);
-        
+        $('#edit_product_price_sale').val(data.sale);
 
         $.each(JSON.parse(decode_quote(data.img)), function(k, v){
             $('#edit_show_product_img_' + (k + 1)).attr("src", BASE_URL + 'images/product/' + v['file_name']);
@@ -404,7 +426,6 @@ function datatable(edit_quill_th, edit_quill_en){
 
         edit_quill_th.root.innerHTML = decode_quote(data.detailTh).replaceAll('div', 'p');
 		edit_quill_en.root.innerHTML = decode_quote(data.detailEn).replaceAll('div', 'p');
-
     });
 
     $('#dtb_product tbody').on( 'click', '[name="product_img"]', function (e) {
@@ -422,18 +443,24 @@ function datatable(edit_quill_th, edit_quill_en){
         modal_imgHTML += '<div class="modal-body">';
         modal_imgHTML += '<div class="row">';
 
-        $.each(image_arr, function(k, v){
-            var imagesProduct = BASE_URL + 'images/product/' + v['file_name'];
-            if(k == 0){
-                modal_imgHTML += '<div class="col-12 mb-3">';
-                modal_imgHTML += '<img src="' + imagesProduct + '" class="w-100" style="max-height: 400px;object-fit: cover;">';
-                modal_imgHTML += '</div>';
-            }else{
-                modal_imgHTML += '<div class="col-md-4 col-12">';
-                modal_imgHTML += '<img src="' + imagesProduct + '" class="w-100">';
-                modal_imgHTML += '</div>';
-            }
-        })
+        if(image_arr.length > 0){
+            $.each(image_arr, function(k, v){
+                var imagesProduct = BASE_URL + 'images/product/' + v['file_name'];
+                if(k == 0){
+                    modal_imgHTML += '<div class="col-12 mb-3">';
+                    modal_imgHTML += '<img src="' + imagesProduct + '" class="w-100" style="max-height: 400px;object-fit: cover;">';
+                    modal_imgHTML += '</div>';
+                }else{
+                    modal_imgHTML += '<div class="col-md-4 col-12">';
+                    modal_imgHTML += '<img src="' + imagesProduct + '" class="w-100">';
+                    modal_imgHTML += '</div>';
+                }
+            })
+        }else{
+                    modal_imgHTML += '<div class="col-12 mb-3">';
+                    modal_imgHTML += '<img src="' + BASE_URL + 'images/no-image.jpg" class="w-100" style="max-height: 400px;object-fit: cover;">';
+                    modal_imgHTML += '</div>';
+        }
         modal_imgHTML += '</div>';
         modal_imgHTML += '</div>';
         modal_imgHTML += '<div class="modal-footer">'
@@ -671,13 +698,16 @@ function datatable_type(){
                 }
             }
         });
-    });
-    
+    });  
 }
 
 function image(data, type, row, meta){
+    if(JSON.parse(data).length != 0){
+        var imagesUrl = BASE_URL + 'images/product/' + JSON.parse(data)[0]['file_name'];
+    }else{
+        var imagesUrl = BASE_URL + 'images/no-image.jpg';
+    }
     
-    var imagesUrl = BASE_URL + 'images/product/' + JSON.parse(data)[0]['file_name'];
     var images = '';
     images += '<div class="col-auto">';
     images += ' <img name="product_img" src="' + imagesUrl + '" ';
@@ -747,7 +777,8 @@ function tools(data, type, row) {
         tools += ' data-price = "'    + row['PRODUCT_PRICE'] + '"';
         tools += ' data-img = "'      + encode_quote(row['PRODUCT_IMG']) + '"';
         tools += ' data-tag = "'      + row['PRODUCT_TAG'] + '"';
-        tools += ' data-stock = "'     + row['PRODUCT_STOCK'] + '"';
+        tools += ' data-stock = "'    + row['PRODUCT_STOCK'] + '"';
+        tools += ' data-sale = "'     + row['PRODUCT_PRICE_SALE'] + '"';
         tools += ' name="update" class="btn btn-warning mx-1"><i class="fas fa-edit"></i></button>';
         tools += '<button name="remove" data-id="' + data + '" class="btn btn-danger mx-1"><i class="far fa-trash-alt"></i></button>';
     return tools;

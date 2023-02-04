@@ -186,7 +186,7 @@ if($_SESSION['status'] != true || ($_SESSION['isAdmin'] != true && $_SESSION['gr
             <div class="modal-status bg-yellow"></div>
             
                 <div class="modal-header">
-                    <h5 class="modal-title text-yellow">Update News</h5>
+                    <h5 class="modal-title text-yellow">Edit News</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -270,12 +270,7 @@ if($_SESSION['status'] != true || ($_SESSION['isAdmin'] != true && $_SESSION['gr
                         Cancel
                     </button>
                     <button type="submit" class="btn btn-yellow ms-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Create new gallery
+                        Update gallery
                     </button>
                     </form>
                 </div>

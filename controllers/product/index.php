@@ -58,9 +58,9 @@
             <th>PRODUCT NAME</th>
             <th>PRODUCT TYPE</th>
             <th>PRODUCT PRICE</th>
+            <th>PRODUCT SALE</th>
             <th>PRODUCT ACTIVE</th>
             <th>Createdatetime</th>
-            <th>STOCK</th>
             <th>Tools</th>
           </tr>
         </thead>
@@ -166,12 +166,6 @@
                                 </div>
                                 <div class="col-12 mb-3">
                                     <div class="form-floating">
-                                        <input type="tel" id="add_product_price" name="add_product_price" class="form-control" placeholder="Enter price name">
-                                        <label for="add_product_price">Product price</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <div class="form-floating">
                                         <select class="form-select" id="add_product_tag" name="add_product_tag">
                                             <option value="NEW" selected>NEW</option>
                                             <option value="PROMOTION">PROMOTION</option>
@@ -179,6 +173,18 @@
                                             <option value="SALE">SALE</option>
                                         </select>
                                         <label for="add_product_tag">Select</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel" id="add_product_price" name="add_product_price" class="form-control" placeholder="Enter price name">
+                                        <label for="add_product_price">Product price</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel" id="add_product_price_sale" name="add_product_price_sale" class="form-control d-none" placeholder="Enter price name">
+                                        <label for="add_product_price_sale">Product price sale</label>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-3">
@@ -214,7 +220,7 @@
         <div class="modal-content">
             <div class="modal-status bg-yellow"></div>
             <div class="modal-header">
-                <h5 class="modal-title text-yellow">Update product</h5>
+                <h5 class="modal-title text-yellow">Edit product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -305,12 +311,6 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div class="form-floating">
-                                    <input type="tel" id="edit_product_price" name="edit_product_price" class="form-control" placeholder="Enter price name">
-                                    <label for="edit_product_price">Product price</label>
-                                </div>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <div class="form-floating">
                                     <select class="form-select" id="edit_product_tag" name="edit_product_tag">
                                         <option value="NEW" selected>NEW</option>
                                         <option value="PROMOTION">PROMOTION</option>
@@ -318,6 +318,18 @@
                                         <option value="SALE">SALE</option>
                                     </select>
                                     <label for="edit_product_tag">Select</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <input type="tel" id="edit_product_price" name="edit_product_price" class="form-control" placeholder="Enter price name">
+                                    <label for="edit_product_price">Product price</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <input type="tel" id="edit_product_price_sale" name="edit_product_price_sale" class="form-control d-none" placeholder="Enter price name">
+                                    <label for="edit_product_price_sale">Product price sale</label>
                                 </div>
                             </div>
                             <div class="col-12 mb-3">
@@ -337,11 +349,6 @@
                     Cancel
                 </button>
                 <button type="submit" class="btn btn-yellow ms-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
                     Update product
                 </button>
                 </form>

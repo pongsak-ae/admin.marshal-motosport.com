@@ -31,6 +31,7 @@ if ($cmd != "") {
                         , PRODUCT_TAG
                         , (SELECT MAX(PRODUCT_ROWS) FROM tb_product WHERE tb_product.PRODUCT_STATUS = 'on') AS max_order
                         , PRODUCT_STOCK
+                        , PRODUCT_PRICE_SALE
                 FROM tb_product
                 INNER JOIN tb_product_type ON tb_product.PRODUCT_TYPE_ID = tb_product_type.PRODUCT_TYPE_ID 
                 ORDER BY PRODUCT_ROWS";
@@ -90,6 +91,9 @@ if ($cmd != "") {
         $add_product_detail_en  = isset($_POST['add_product_detail_en']) ? $_POST['add_product_detail_en'] : "";
         $add_product_tag        = isset($_POST['add_product_tag']) ? $_POST['add_product_tag'] : "";
         $add_product_stock      = isset($_POST['add_product_stock']) ? $_POST['add_product_stock'] : "";
+        $add_product_price_sale = isset($_POST['add_product_price_sale']) ? $_POST['add_product_price_sale'] : "";
+        $add_product_price_sale = ($_POST['add_product_tag'] == 'SALE') ? $add_product_price_sale : 0;
+        // $add_product_price_sale = ($add_product_price_sale == '') ? 0 : $add_product_price_sale;
 
         $FILES_ARRAY = array();
         if(!empty($_FILES["add_product_img"]["name"])) {
@@ -111,6 +115,7 @@ if ($cmd != "") {
         $sql_param['PRODUCT_NAME_EN']       = $add_product_name_en;
         $sql_param['PRODUCT_TYPE_ID']       = $add_product_type;
         $sql_param['PRODUCT_PRICE']         = number_format($add_product_price, 2, '.', '');
+        $sql_param['PRODUCT_PRICE_SALE']    = number_format($add_product_price_sale, 2, '.', '');
         $sql_param['PRODUCT_DETAIL_TH']     = $add_product_detail_th;
         $sql_param['PRODUCT_DETAIL_EN']     = $add_product_detail_en;
         $sql_param['PRODUCT_TAG']           = $add_product_tag;
@@ -142,7 +147,9 @@ if ($cmd != "") {
             if (!empty($_POST['edit_product_price'])) $sql_param['PRODUCT_PRICE'] = $_POST['edit_product_price'];
             if (!empty($_POST['edit_product_tag'])) $sql_param['PRODUCT_TAG'] = $_POST['edit_product_tag'];
             if (!empty($_POST['edit_product_stock'])) $sql_param['PRODUCT_STOCK'] = $_POST['edit_product_stock'];
-
+            $edit_product_price_sale = isset($_POST['edit_product_price_sale']) ? $_POST['edit_product_price_sale'] : "";
+            $edit_product_price_sale = ($_POST['edit_product_tag'] == 'SALE') ? number_format($edit_product_price_sale, 2, '.', '') : 0;
+            $sql_param['PRODUCT_PRICE_SALE'] = $edit_product_price_sale;
             $FILES_ARRAY = array();
             if(!empty($_FILES["edit_product_img"]["name"])) {
                 foreach ($_FILES['edit_product_img']['name'] as $key => $value) {
